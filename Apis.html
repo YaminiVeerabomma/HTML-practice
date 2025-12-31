@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML APIs Demo</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        .box {
+            width: 150px;
+            height: 150px;
+            background: lightblue;
+            text-align: center;
+            line-height: 150px;
+            margin: 10px;
+            display: inline-block;
+            cursor: grab;
+        }
+
+        #dropZone {
+            width: 200px;
+            height: 200px;
+            border: 2px dashed black;
+            margin-top: 20px;
+            text-align: center;
+            line-height: 200px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>1️⃣ Geolocation API</h2>
+<button onclick="getLocation()">Get My Location</button>
+<p id="location"></p>
+
+<hr>
+
+<h2>2️⃣ Drag and Drop API</h2>
+
+<div id="dragItem" class="box" draggable="true" ondragstart="drag(event)">
+    Drag Me
+</div>
+
+<div id="dropZone" ondrop="drop(event)" ondragover="allowDrop(event)">
+    Drop Here
+</div>
+
+<hr>
+
+<h2>3️⃣ Web Storage API</h2>
+
+<input type="text" id="nameInput" placeholder="Enter your name">
+<button onclick="saveData()">Save</button>
+<button onclick="loadData()">Load</button>
+
+<p id="storageResult"></p>
+
+<script>
+    // ===== Geolocation API =====
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            document.getElementById("location").innerHTML = "Geolocation not supported.";
+        }
+    }
+
+    function showPosition(position) {
+        document.getElementById("location").innerHTML =
+            "Latitude: " + position.coords.latitude +
+            "<br>Longitude: " + position.coords.longitude;
+    }
+
+    // ===== Drag and Drop API =====
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        let data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+    }
+
+    // ===== Web Storage API =====
+    function saveData() {
+        let name = document.getElementById("nameInput").value;
+        localStorage.setItem("username", name);
+        alert("Saved to Local Storage!");
+    }
+
+    function loadData() {
+        let name = localStorage.getItem("username");
+        document.getElementById("storageResult").innerText =
+            "Stored Name: " + name;
+    }
+</script>
+
+</body>
+</html>
